@@ -1,52 +1,40 @@
-import Head from 'next/head';
-import styles from 'src/styles/Home.module.css';
-import { Footer } from 'src/components/Footer';
-import { Main } from 'src/components/Main';
-import { Header } from 'src/components/Header';
-import { useCallback, useEffect, useState } from 'react';
+import classes from 'src/components/Links/Links.module.css';
 
-export default function Home() {
-  const [count, setCount] = useState(1);
-  const [text, setText] = useState('');
-  const [isShow, setIsShow] = useState(true);
+const ITEMS = [
+  {
+    href: 'https://nextjs.org/docs',
+    title: 'Documentation →',
+    description: 'Find in-depth information about Next.js features and API.',
+  },
+  {
+    href: 'https://nextjs.org/learn',
+    title: 'Learn →',
+    description: 'Learn about Next.js in an interactive course with quizzes!',
+  },
+  {
+    href: 'https://github.com/vercel/next.js/tree/master/examples',
+    title: 'Examples →',
+    description: 'Discover and deploy boilerplate example Next.js projects.',
+  },
+  {
+    href: 'https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app',
+    title: 'Deploy →',
+    description:
+      'Instantly deploy your Next.js site to a public URL with Vercel.',
+  },
+];
 
-  const handleClick = useCallback(() => {
-    if (count < 10) {
-      setCount((prevCount) => prevCount + 1);
-    }
-  }, [count]);
-
-  const handleDisplay = useCallback(() => {
-    setIsShow((prevIsShow) => !prevIsShow);
-  }, []);
-
-  const handleChange = useCallback((e) => {
-    if (e.target.value.length > 5) {
-      alert('5文字以内にしてください');
-      return;
-    }
-    setText(e.target.value.trim());
-  }, []);
-
-  useEffect(() => {
-    document.body.style.backgroundColor = 'lightblue';
-    return () => {
-      document.body.style.backgroundColor = '';
-    };
-  }, []);
-
+export function Links() {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Index Page</title>
-      </Head>
-      <Header />
-      {isShow ? <h1>{count}</h1> : null}
-      <button onClick={handleClick}>ボタン</button>
-      <button onClick={handleDisplay}>{isShow ? '非表示' : '表示'}</button>
-      <input type="text" value={text} onChange={handleChange} />
-      <Main page="index" />
-      <Footer />
+    <div className={classes.grid}>
+      {ITEMS.map((item) => {
+        return (
+          <a key={item.href} href={item.href} className={classes.card}>
+            <h3 className={classes.title}>{item.title}</h3>
+            <p className={classes.description}>{item.description}</p>
+          </a>
+        );
+      })}
     </div>
   );
 }
