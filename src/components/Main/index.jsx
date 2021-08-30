@@ -1,4 +1,7 @@
-import classes from 'src/components/Links/Links.module.css';
+import classes from 'src/components/Main/Main.module.css';
+import { Headline } from 'src/components/Headline';
+import { Links } from 'src/components/Links';
+import { useCallback, useState } from 'react';
 
 const ITEMS = [
   {
@@ -24,17 +27,20 @@ const ITEMS = [
   },
 ];
 
-export function Links() {
+export function Main(props) {
+  const [items, setItems] = useState(ITEMS);
+  const handleReduce = useCallback(() => {
+    setItems((prevItems) => {
+      return prevItems.slice(0, prevItems.length - 1);
+    });
+  }, []);
+
   return (
-    <div className={classes.grid}>
-      {ITEMS.map((item) => {
-        return (
-          <a key={item.href} href={item.href} className={classes.card}>
-            <h3 className={classes.title}>{item.title}</h3>
-            <p className={classes.description}>{item.description}</p>
-          </a>
-        );
-      })}
-    </div>
+    <main className={classes.main}>
+      <Headline page={props.page} handleReduce={handleReduce}>
+        <code className={classes.code}>{items.length}</code>
+      </Headline>
+      <Links items={items} />
+    </main>
   );
 }
